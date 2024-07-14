@@ -74,17 +74,28 @@
 					
 					// response
 					, success:function(data) {
-						if (data.is_duplicated_id) {
-							
-						} else {
-							
+						if (data.is_duplicated_id) { // 중복
+							$("#idCheckDuplicated").removeClass("d-none");
+						} else { // 신규
+							$("#idCheckOk").removeClass("d-none");
 						}
 					}
-					, error:function(error) {
+					, error:function(error) { // 코드 오류
 						alert("중복확인에 실패했습니다.");
 					}					
 				}); // ajax 끝
-			}); // 중복확인 끝			
+			}); // 중복확인 끝	
+			
+			// 회원가입
+			$("#signUpForm").on('submit', function(e) {
+				e.preventDefault(); // 서브밋 기능 중단
+				//alert("회원가입");
+				
+				// validation
+				let loginId = $("#loginId").val().trim();
+				
+				
+			}); // 회원가입 끝			
 		}); // ready 끝
     </script>
 </th:block>
