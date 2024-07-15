@@ -91,10 +91,62 @@
 				e.preventDefault(); // 서브밋 기능 중단
 				//alert("회원가입");
 				
-				// validation
+				// validation 유효성검사
 				let loginId = $("#loginId").val().trim();
+				let password = $("input[name=password]").val();				
+				let confirmPassword = $("input[name=confirmPassword]").val();				
+				let name = $("input[name=name]").val().trim();				
+				let email = $("input[name=email]").val().trim();	
 				
+				if (!loginId) {
+					alert("아이디를 입력해주세요.");
+					return false;
+				}
 				
+				if (!password || !confirmPassword) {
+					alert("비밀번호를 입력해주세요.");
+					return false;
+				}
+				
+				if (password != confirmPassword) {
+					alert("비밀번호가 일치하지 않습니다.");
+					return false;
+				}
+				
+				if (!name) {
+					alert("이름을 입력해주세요.");
+					return false;
+				}
+				
+				if (!email) {
+					alert("이메일을 입력해주세요");
+					return false;
+				}
+				
+				// loginId 중복확인 후 사용 가능한지 확인
+				// #idCheckOk d-none이 있을 때 얼럿 띄우기
+				if ($("#idCheckOk").hasClass("d-none")) {
+					alert("아이디 중복 확인을 해주세요");
+					return false;
+				}
+				
+				// 서버 전송
+				let url = $(this).attr("action");
+				console.log(url);
+				let params = $(this).serialize();
+				console.log(params);
+				
+				// ajax
+				$.post(url, params)
+				.done(function(data) {
+					if (data.code == 200) {
+						alert("가입을 환영합니다. 로그인 해주세요");
+						// 로그인 화면으로 이동
+						location.href="/user/sign-in-view";
+					} else {
+						alert(data.error_message);
+					}
+				});				
 			}); // 회원가입 끝			
 		}); // ready 끝
     </script>
