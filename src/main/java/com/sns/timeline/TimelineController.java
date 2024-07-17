@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sns.post.bo.PostBO;
+import com.sns.post.entity.PostEntity;
 
 @Controller
 public class TimelineController {
@@ -20,10 +21,10 @@ public class TimelineController {
 	public String timelineView(Model model) {
 		
 		// DB 조회
-		//List<Post> postList = postBO.;
+		List<PostEntity> postList = postBO.getPostEntityList();
 		
 		// model
-		
+		model.addAttribute("postList", postList);		
 		
 		return "timeline/timeline";
 	}
