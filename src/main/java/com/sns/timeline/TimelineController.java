@@ -16,6 +16,11 @@ public class TimelineController {
 	@Autowired
 	private PostBO postBO;
 	
+	/**
+	 * 타임라인 화면 view
+	 * @param model
+	 * @return
+	 */
 	// http://localhost:8080/timeline/timeline-view
 	@GetMapping("/timeline/timeline-view")
 	public String timelineView(Model model) {

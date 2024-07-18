@@ -12,7 +12,14 @@
 			
 			<div class="d-flex justify-content-between">
 				<div class="file-upload d-flex">
-					<img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png">
+					
+					<!-- file 태그를 숨겨두고 이미를 클릭하면 파일을 클릭한 것과 같은 효과를 준다. -->
+					<input type="file" id="file" accept=".jpg, .png, .gif" class="d-none">
+				
+					<!-- 이미지에 마우스 올리면 마우스 커서가 link로 변경 -->
+					<a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
+					
+					<div id="fileName" class="ml-2"></div>
 				</div>
 				<button id="writeBtn" class="btn btn-info">게시</button>
 			</div>
@@ -81,6 +88,86 @@
 
 <th:block layout:fragment="script">
     <script>
-
+		$(document).ready(function() {
+			// 이미지 a태그 클릭 => 숨겨져 있는 id="file" 태그 동작시킴
+			$("#fileUploadBtn").on('click', function(e) {
+				e.preventDefault(); // 위로 올라가는 현상 방지
+				//alert("클릭");
+				$("#file").click(); // input type="file" 클릭
+			}); // 이미지 a태그 버튼 끝
+			
+			// 파일이 선택될 때, 1.유효성 체크 2.파일명 노출
+			$("#file").on('change', function(e) {
+				// 취소를 누를 때 처리(취소 누를때 파일이 비워지므로 .name에서 에러 발생)
+				let file = e.target.files[0];
+				if (file == null) {
+					$("#file").val("");
+					$("#fileName").text("");
+					return;
+				}
+				
+				//alert("이미지 선택");
+				let fileName = e.target.files[0].name; // ex파일명) parrots-8735074_1280.jpg
+				console.log(fileName);
+			
+				// 1.확장자 validation(유효성 검사)
+				let ext = fileName.split(".").pop().toLowerCase();
+				console.log(ext);
+				
+				if (ext != "gif" && ext != "png" && ext != "jpg") {
+					alert("이미지 파일만 업로드 할 수 있습니다.");
+					$("#file").val(""); // 파일 태그에 올라온 파일 제거(보이지 않지만 꼭! 처리)
+					$("#fileName").text(""); // 보여지고 있는 파일명 초기화
+					return;
+				}
+				
+				// 2. 파일명 노출
+				$("#fileName").text(fileName);
+			}); // 파일 선택 change 끝
+			
+			// 게시글 등록 버튼
+			$("#writeBtn").on('click', function() {
+				//alert("등록확인");
+				let content = $("#writeTextArea").val();
+				let fileName = $("#file").val();
+				
+				if (!fileName) {
+					alert("파일을 첨부해주세요.")
+					return;
+				}
+				
+				// form태그 js
+				let formData = new FormData();
+				formData.append("content", content);
+				formData.append("file", $("#file")[0].files[0]);
+				
+				// AJAX 요청
+				$.ajax({
+					// request
+					type:"post"
+					, url:"/post/create"
+					, data:formData
+					, enctype:"multipart/form-data"
+					, processData:false
+					, contentType:false
+					
+					// response
+					, success:function(data) {
+						if (data.code == 200) {
+							alert("게시물을 업로드 했습니다.");
+							location.reload(); // 새로고침
+						} else if (data.code == 403) { // 비로그인 일 때
+							
+						} else {
+							alert(data.error_message);
+						}
+						
+					} 
+					, error:function(e) {
+						alert("업로드 하는데 실패 했습니다.");
+					}
+				}); // ajax 끝	
+			}); // 게시글 등록 버튼 끝
+		}); // ready 끝
     </script>
 </th:block>
