@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileManagerService {
 	
 	// 실제 업로득 된 이미지가 저장될 서버의 경로
-	//public static final String FILE_UPLOAD_PATH = ""; // 학원컴 경로 (images 폴더 뒤에 /(슬래시) 붙이기)
-	public static final String FILE_UPLOAD_PATH = "D:\\이준호\\6_spring_project 학원 프로젝트\\sns\\sns_workspace\\images/"; // 집컴 경로
+	public static final String FILE_UPLOAD_PATH = "D:\\이준호\\6_spring_project\\sns\\sns_workspace\\images/"; // 학원컴 경로 (images 폴더 뒤에 /(슬래시) 붙이기)
+	//public static final String FILE_UPLOAD_PATH = "D:\\이준호\\6_spring_project 학원 프로젝트\\sns\\sns_workspace\\images/"; // 집컴 경로
 	
 	// input:MultipartFile, userLoginId
 	// output:String(이미지 경로)

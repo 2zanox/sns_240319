@@ -39,11 +39,5 @@ public class PostBO {
 				.imagePath(imagePath)
 				.build());
 	}
-	
-	// input: postId
-	// output Post or null
-//	public PostEntity getPostByPostId(int postId) {
-//		
-//	}
 
 }
