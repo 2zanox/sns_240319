@@ -70,7 +70,7 @@
 						<span th:text="${commentView.comment.content}">댓글 내용임</span>
 						
 						<!-- 댓글 삭제(자신의 댓글만 가능) -->
-						<a href="#" class="comment-del-btn">
+						<a href="#" class="comment-del-btn" th:if="${session.userId == commentView.comment.userId}" th:data-comment-id="${commentView.comment.id}">
 							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
 						</a>
 					</div>
@@ -231,9 +231,31 @@
 			}); // 댓글 달기 버튼 끝		
 			
 			// 댓글 삭제 버튼
-			$(".comment-del-btn").on('click', function() {
+			$(".comment-del-btn").on('click', function(e) {
 				//alert("삭제확인");
+				e.preventDefault(); // 위로 올라감 방지
 				
+				let commentId = $(this).data("comment-id");
+				//alert(commentId);
+				
+				$.ajax({
+					// request
+					type:"DELETE"
+					, url:"/comment/delete"
+					, data:{"commentId":commentId}
+					
+					// response
+					, success:function(data) {
+						if (data.code == 200) {
+							location.reload(); // 새로고침
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function() {
+						alert("댓글 삭제하는데 실패 했습니다.");
+					}
+				}); // ajax 끝
 			}); // 댓글 삭제 버튼 끝
 		}); // ready 끝
     </script>

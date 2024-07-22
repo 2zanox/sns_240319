@@ -59,4 +59,10 @@ public class CommentBO {
 		return commentViewList;
 	}
 	
+	// input: commentId
+	// output: X
+	public void deleteCommentById(int id) {
+		commentMapper.deleteCommentById(id);
+	}
+	
 }
