@@ -19,11 +19,12 @@ public class LikeBO {
 		
 		// 여부 => 삭제 or 추가
 		if (count > 0) {
-			//
+			// 있으면 삭제
+			likeMapper.deleteLikeByPostIdUserId(postId, userId);
 		} else {
-			//
+			// 없으면 추가
+			likeMapper.insertLike(postId, userId);
 		}
-		
 	}
 	
 }
