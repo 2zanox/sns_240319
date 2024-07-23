@@ -67,8 +67,8 @@ public class CommentRestController {
 		// 로그인 여부
 		Integer userId = (Integer)session.getAttribute("userId");
 		Map<String, Object> result = new HashMap<>();
-		if (userId == null) {
-			result.put("code", 500);
+		if (userId == null) { // 비로그인 일 때
+			result.put("code", 403);
 			result.put("error_message", "로그인을 해주세요");
 			return result;
 		}

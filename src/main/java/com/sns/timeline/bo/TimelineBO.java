@@ -52,10 +52,13 @@ public class TimelineBO {
 			List<CommentView> commentViewList = commentBO.generateCommentViewListByPostId(post.getId());
 			card.setCommentList(commentViewList);
 			
+			// 좋아요 개수
+			
+			// 좋아요 여부 채우기
+			
 			// !!!!!!!! 반드시 리스트에 넣는다.
 			cardViewList.add(card);
-		}
-		
+		}		
 		return cardViewList;
 	}
 	

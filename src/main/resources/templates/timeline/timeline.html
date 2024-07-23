@@ -47,13 +47,16 @@
 				
 				<!-- 좋아요 -->
 				<div class="card-like m-3">
-					<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
+					<a href="#" class="likeBtn" th:data-post-id="${cardView.post.id}">
+						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
+						<img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="empty heart">
+					</a>
 					<span th:text="|좋아요 13개|"></span>
 				</div>
 				
 				<!-- 글 -->
 				<div class="card-post m-3">
-					<span class="font-weight-bold" th:text="${cardView.post.userId}">글쓴이</span>
+					<span class="font-weight-bold" th:text="${cardView.user.loginId}">글쓴이</span>
 					<span th:text="${cardView.post.content}">글 내용입니다!!!!</span>
 				</div>
 				
@@ -257,6 +260,36 @@
 					}
 				}); // ajax 끝
 			}); // 댓글 삭제 버튼 끝
+			
+			// 좋아요 버튼
+			$(".likeBtn").on('click', function(e) {
+				e.preventDefault(); // 위로 올라감 방지
+				//alert("좋아요 확인");	
+				
+				// 글 번호 꺼내옴
+				let postId = $(this).data("post-id");
+				//alert(postId);
+				
+				$.ajax({
+					type:"GET"
+					, url:"/like/" + postId					
+//					, data:{}
+					
+					, success:function(data) {
+						if (data.code == 200) {
+							location.reload(); // 새로고침 => 타임라인 화면 뿌려질 때 하트 여부 나타남
+						} else if (data.code == 403) { // 비로그인 일 때 로그인 화면으로 이동
+							alert("로그인을 해주세요");
+							location.href = "/user/sign-in-view";
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("좋아요 누르는데 실패 했습니다.");
+					}
+				}); // ajax 끝
+			}); // 좋아요 버튼 끝			
 		}); // ready 끝
     </script>
 </th:block>
