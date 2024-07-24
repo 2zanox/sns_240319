@@ -12,6 +12,8 @@ import com.sns.post.bo.PostBO;
 import com.sns.timeline.bo.TimelineBO;
 import com.sns.timeline.domain.CardView;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class TimelineController {
 	
@@ -31,12 +33,15 @@ public class TimelineController {
 	 */
 	// http://localhost:8080/timeline/timeline-view
 	@GetMapping("/timeline/timeline-view")
-	public String timelineView(Model model) {
+	public String timelineView(Model model, HttpSession session) {
+		
+		// session 가져오기
+		Integer userId = (Integer)session.getAttribute("userId");
 		
 		// DB 조회
 //		List<PostEntity> postList = postBO.getPostEntityList();
 //		List<Comment> commentList = commentBO.getCommentList();
-		List<CardView> cardViewList = timelineBO.generateCardViewList(); // 위에있는 데이터들을 CardView로 담아서 출력
+		List<CardView> cardViewList = timelineBO.generateCardViewList(userId); // 위에있는 데이터들을 CardView로 담아서 출력
 		
 		// model
 //		model.addAttribute("postList", postList);
